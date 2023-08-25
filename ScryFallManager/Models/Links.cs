@@ -1,9 +1,8 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ScryFallManager.Models
 {
-    public class Carta
+    public class Links
     {
         [Key]
         public int Id { get; set; }
