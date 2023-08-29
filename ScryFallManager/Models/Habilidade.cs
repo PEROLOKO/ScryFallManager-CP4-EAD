@@ -1,6 +1,6 @@
 ﻿namespace ScryFallManager.Models
 {
-    public class Idioma
+    public class Habilidade
     {
         public int Id { get; set; }
 

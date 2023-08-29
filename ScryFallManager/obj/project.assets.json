@@ -11511,19 +11511,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\luizz\\.nuget\\packages\\": {}
+    "C:\\Users\\naran\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\luizz\\OneDrive\\Área de Trabalho\\ScryFallManager-CP4-EAD\\ScryFallManager\\ScryFallManager.csproj",
+      "projectUniqueName": "E:\\GITHUB\\ScryFallManager-CP4-EAD\\ScryFallManager\\ScryFallManager.csproj",
       "projectName": "ScryFallManager",
-      "projectPath": "C:\\Users\\luizz\\OneDrive\\Área de Trabalho\\ScryFallManager-CP4-EAD\\ScryFallManager\\ScryFallManager.csproj",
-      "packagesPath": "C:\\Users\\luizz\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\luizz\\OneDrive\\Área de Trabalho\\ScryFallManager-CP4-EAD\\ScryFallManager\\obj\\",
+      "projectPath": "E:\\GITHUB\\ScryFallManager-CP4-EAD\\ScryFallManager\\ScryFallManager.csproj",
+      "packagesPath": "C:\\Users\\naran\\.nuget\\packages\\",
+      "outputPath": "E:\\GITHUB\\ScryFallManager-CP4-EAD\\ScryFallManager\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\luizz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\naran\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -11531,6 +11536,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -11591,7 +11597,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
       }
     }
   }
