@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ScryFallManager.Entities.Carta>
+﻿@model IEnumerable<ScryFallManager.Entities.Idioma>
 
 @{
     ViewData["Title"] = "Index";
@@ -16,16 +16,7 @@
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CardTexto)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RaridadeCarta)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CustoMana)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataLancamento)
+                @Html.DisplayNameFor(model => model.Carta)
             </th>
             <th></th>
         </tr>
@@ -37,16 +28,7 @@
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CardTexto)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RaridadeCarta)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustoMana)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataLancamento)
+                @Html.DisplayFor(modelItem => item.Carta.Nome)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

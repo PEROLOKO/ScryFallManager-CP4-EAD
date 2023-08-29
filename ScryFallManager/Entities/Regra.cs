@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ScryFallManager.Models
+namespace ScryFallManager.Entities
 {
     public class Regra
     {
@@ -8,6 +8,7 @@ namespace ScryFallManager.Models
         public int Id { get; set; }
 
         [Required]
+        [MaxLength(200)]
         public string Texto { get; set; }
 
         [Required]

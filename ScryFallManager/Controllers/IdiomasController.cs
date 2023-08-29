@@ -10,87 +10,90 @@ using ScryFallManager.Entities;
 
 namespace ScryFallManager.Controllers
 {
-    public class CartasController : Controller
+    public class IdiomasController : Controller
     {
         private readonly OracleDbContext _context;
 
-        public CartasController(OracleDbContext context)
+        public IdiomasController(OracleDbContext context)
         {
             _context = context;
         }
 
-        // GET: Cartas
+        // GET: Idiomas
         public async Task<IActionResult> Index()
         {
-              return _context.Cartas != null ? 
-                          View(await _context.Cartas.ToListAsync()) :
-                          Problem("Entity set 'OracleDbContext.Cartas'  is null.");
+            var oracleDbContext = _context.Idiomas.Include(i => i.Carta);
+            return View(await oracleDbContext.ToListAsync());
         }
 
-        // GET: Cartas/Details/5
+        // GET: Idiomas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Cartas == null)
+            if (id == null || _context.Idiomas == null)
             {
                 return NotFound();
             }
 
-            var carta = await _context.Cartas
+            var idioma = await _context.Idiomas
+                .Include(i => i.Carta)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (carta == null)
+            if (idioma == null)
             {
                 return NotFound();
             }
 
-            return View(carta);
+            return View(idioma);
         }
 
-        // GET: Cartas/Create
+        // GET: Idiomas/Create
         public IActionResult Create()
         {
+            ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Nome");
             return View();
         }
 
-        // POST: Cartas/Create
+        // POST: Idiomas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,CardTexto,RaridadeCarta,CustoMana,DataLancamento")] Carta carta)
+        public async Task<IActionResult> Create([Bind("Id,Nome,CartaId")] Idioma idioma)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(carta);
+                _context.Add(idioma);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(carta);
+            ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Nome", idioma.CartaId);
+            return View(idioma);
         }
 
-        // GET: Cartas/Edit/5
+        // GET: Idiomas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Cartas == null)
+            if (id == null || _context.Idiomas == null)
             {
                 return NotFound();
             }
 
-            var carta = await _context.Cartas.FindAsync(id);
-            if (carta == null)
+            var idioma = await _context.Idiomas.FindAsync(id);
+            if (idioma == null)
             {
                 return NotFound();
             }
-            return View(carta);
+            ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Nome", idioma.CartaId);
+            return View(idioma);
         }
 
-        // POST: Cartas/Edit/5
+        // POST: Idiomas/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,CardTexto,RaridadeCarta,CustoMana,DataLancamento")] Carta carta)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,CartaId")] Idioma idioma)
         {
-            if (id != carta.Id)
+            if (id != idioma.Id)
             {
                 return NotFound();
             }
@@ -99,12 +102,12 @@ namespace ScryFallManager.Controllers
             {
                 try
                 {
-                    _context.Update(carta);
+                    _context.Update(idioma);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CartaExists(carta.Id))
+                    if (!IdiomaExists(idioma.Id))
                     {
                         return NotFound();
                     }
@@ -115,49 +118,51 @@ namespace ScryFallManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(carta);
+            ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Nome", idioma.CartaId);
+            return View(idioma);
         }
 
-        // GET: Cartas/Delete/5
+        // GET: Idiomas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Cartas == null)
+            if (id == null || _context.Idiomas == null)
             {
                 return NotFound();
             }
 
-            var carta = await _context.Cartas
+            var idioma = await _context.Idiomas
+                .Include(i => i.Carta)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (carta == null)
+            if (idioma == null)
             {
                 return NotFound();
             }
 
-            return View(carta);
+            return View(idioma);
         }
 
-        // POST: Cartas/Delete/5
+        // POST: Idiomas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Cartas == null)
+            if (_context.Idiomas == null)
             {
-                return Problem("Entity set 'OracleDbContext.Cartas'  is null.");
+                return Problem("Entity set 'OracleDbContext.Idiomas'  is null.");
             }
-            var carta = await _context.Cartas.FindAsync(id);
-            if (carta != null)
+            var idioma = await _context.Idiomas.FindAsync(id);
+            if (idioma != null)
             {
-                _context.Cartas.Remove(carta);
+                _context.Idiomas.Remove(idioma);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CartaExists(int id)
+        private bool IdiomaExists(int id)
         {
-          return (_context.Cartas?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Idiomas?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

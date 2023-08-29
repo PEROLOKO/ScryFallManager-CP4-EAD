@@ -9,57 +9,97 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ScryFallManager
 build_property.RootNamespace = ScryFallManager
-build_property.ProjectDir = E:\GITHUB\ScryFallManager-CP4-EAD\ScryFallManager\
+build_property.ProjectDir = C:\Users\logonrmlocal\Documents\GitHub\ScryFallManager-CP4-EAD\ScryFallManager\
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = E:\GITHUB\ScryFallManager-CP4-EAD\ScryFallManager
+build_property.MSBuildProjectDirectory = C:\Users\logonrmlocal\Documents\GitHub\ScryFallManager-CP4-EAD\ScryFallManager
 build_property._RazorSourceGeneratorDebug = 
 
-[E:/GITHUB/ScryFallManager-CP4-EAD/ScryFallManager/Views/Cartas/Create.cshtml]
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/Cartas/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydGFzXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/GITHUB/ScryFallManager-CP4-EAD/ScryFallManager/Views/Cartas/Delete.cshtml]
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/Cartas/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydGFzXERlbGV0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/GITHUB/ScryFallManager-CP4-EAD/ScryFallManager/Views/Cartas/Details.cshtml]
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/Cartas/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydGFzXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/GITHUB/ScryFallManager-CP4-EAD/ScryFallManager/Views/Cartas/Edit.cshtml]
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/Cartas/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydGFzXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/GITHUB/ScryFallManager-CP4-EAD/ScryFallManager/Views/Cartas/Index.cshtml]
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/Cartas/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydGFzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/GITHUB/ScryFallManager-CP4-EAD/ScryFallManager/Views/Home/Index.cshtml]
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/Habilidades/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGFiaWxpZGFkZXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/Habilidades/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGFiaWxpZGFkZXNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/Habilidades/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGFiaWxpZGFkZXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/Habilidades/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGFiaWxpZGFkZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/Habilidades/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGFiaWxpZGFkZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/GITHUB/ScryFallManager-CP4-EAD/ScryFallManager/Views/Home/Privacy.cshtml]
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/GITHUB/ScryFallManager-CP4-EAD/ScryFallManager/Views/Shared/Error.cshtml]
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/Idiomas/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSWRpb21hc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/Idiomas/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSWRpb21hc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/Idiomas/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSWRpb21hc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/Idiomas/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSWRpb21hc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/Idiomas/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSWRpb21hc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/GITHUB/ScryFallManager-CP4-EAD/ScryFallManager/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/GITHUB/ScryFallManager-CP4-EAD/ScryFallManager/Views/_ViewImports.cshtml]
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/GITHUB/ScryFallManager-CP4-EAD/ScryFallManager/Views/_ViewStart.cshtml]
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/GITHUB/ScryFallManager-CP4-EAD/ScryFallManager/Views/Shared/_Layout.cshtml]
+[C:/Users/logonrmlocal/Documents/GitHub/ScryFallManager-CP4-EAD/ScryFallManager/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-f5ruv7gpe6

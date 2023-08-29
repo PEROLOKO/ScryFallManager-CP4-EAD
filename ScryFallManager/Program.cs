@@ -1,5 +1,9 @@
+using FluentValidation.AspNetCore;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using ScryFallManager.Persistence;
+using ScryFallManager.Data;
+using ScryFallManager.Entities;
+using ScryFallManager.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,8 +12,11 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<OracleDbContext>(options =>
 {
-    options.UseOracle(builder.Configuration.GetConnectionString("OracleConnection"));
+    options.UseOracle(builder.Configuration.GetConnectionString("oracle"));
 });
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddScoped<IValidator<Carta>, CartaValidation>();
 
 var app = builder.Build();
 

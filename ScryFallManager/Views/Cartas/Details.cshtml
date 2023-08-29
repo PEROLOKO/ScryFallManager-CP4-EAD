@@ -1,4 +1,4 @@
-﻿@model ScryFallManager.Models.Carta
+﻿@model ScryFallManager.Entities.Carta
 
 @{
     ViewData["Title"] = "Details";
@@ -23,10 +23,10 @@
             @Html.DisplayFor(model => model.CardTexto)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Raridade)
+            @Html.DisplayNameFor(model => model.RaridadeCarta)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Raridade)
+            @Html.DisplayFor(model => model.RaridadeCarta)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CustoMana)

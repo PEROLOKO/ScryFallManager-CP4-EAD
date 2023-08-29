@@ -10,87 +10,90 @@ using ScryFallManager.Entities;
 
 namespace ScryFallManager.Controllers
 {
-    public class CartasController : Controller
+    public class HabilidadesController : Controller
     {
         private readonly OracleDbContext _context;
 
-        public CartasController(OracleDbContext context)
+        public HabilidadesController(OracleDbContext context)
         {
             _context = context;
         }
 
-        // GET: Cartas
+        // GET: Habilidades
         public async Task<IActionResult> Index()
         {
-              return _context.Cartas != null ? 
-                          View(await _context.Cartas.ToListAsync()) :
-                          Problem("Entity set 'OracleDbContext.Cartas'  is null.");
+            var oracleDbContext = _context.Habilidades.Include(h => h.Carta);
+            return View(await oracleDbContext.ToListAsync());
         }
 
-        // GET: Cartas/Details/5
+        // GET: Habilidades/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Cartas == null)
+            if (id == null || _context.Habilidades == null)
             {
                 return NotFound();
             }
 
-            var carta = await _context.Cartas
+            var habilidade = await _context.Habilidades
+                .Include(h => h.Carta)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (carta == null)
+            if (habilidade == null)
             {
                 return NotFound();
             }
 
-            return View(carta);
+            return View(habilidade);
         }
 
-        // GET: Cartas/Create
+        // GET: Habilidades/Create
         public IActionResult Create()
         {
+            ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Nome");
             return View();
         }
 
-        // POST: Cartas/Create
+        // POST: Habilidades/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,CardTexto,RaridadeCarta,CustoMana,DataLancamento")] Carta carta)
+        public async Task<IActionResult> Create([Bind("Id,Nome,CartaId")] Habilidade habilidade)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(carta);
+                _context.Add(habilidade);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(carta);
+            ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Nome", habilidade.CartaId);
+            return View(habilidade);
         }
 
-        // GET: Cartas/Edit/5
+        // GET: Habilidades/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Cartas == null)
+            if (id == null || _context.Habilidades == null)
             {
                 return NotFound();
             }
 
-            var carta = await _context.Cartas.FindAsync(id);
-            if (carta == null)
+            var habilidade = await _context.Habilidades.FindAsync(id);
+            if (habilidade == null)
             {
                 return NotFound();
             }
-            return View(carta);
+            ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Nome", habilidade.CartaId);
+            return View(habilidade);
         }
 
-        // POST: Cartas/Edit/5
+        // POST: Habilidades/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,CardTexto,RaridadeCarta,CustoMana,DataLancamento")] Carta carta)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,CartaId")] Habilidade habilidade)
         {
-            if (id != carta.Id)
+            if (id != habilidade.Id)
             {
                 return NotFound();
             }
@@ -99,12 +102,12 @@ namespace ScryFallManager.Controllers
             {
                 try
                 {
-                    _context.Update(carta);
+                    _context.Update(habilidade);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CartaExists(carta.Id))
+                    if (!HabilidadeExists(habilidade.Id))
                     {
                         return NotFound();
                     }
@@ -115,49 +118,51 @@ namespace ScryFallManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(carta);
+            ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Nome", habilidade.CartaId);
+            return View(habilidade);
         }
 
-        // GET: Cartas/Delete/5
+        // GET: Habilidades/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Cartas == null)
+            if (id == null || _context.Habilidades == null)
             {
                 return NotFound();
             }
 
-            var carta = await _context.Cartas
+            var habilidade = await _context.Habilidades
+                .Include(h => h.Carta)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (carta == null)
+            if (habilidade == null)
             {
                 return NotFound();
             }
 
-            return View(carta);
+            return View(habilidade);
         }
 
-        // POST: Cartas/Delete/5
+        // POST: Habilidades/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Cartas == null)
+            if (_context.Habilidades == null)
             {
-                return Problem("Entity set 'OracleDbContext.Cartas'  is null.");
+                return Problem("Entity set 'OracleDbContext.Habilidades'  is null.");
             }
-            var carta = await _context.Cartas.FindAsync(id);
-            if (carta != null)
+            var habilidade = await _context.Habilidades.FindAsync(id);
+            if (habilidade != null)
             {
-                _context.Cartas.Remove(carta);
+                _context.Habilidades.Remove(habilidade);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CartaExists(int id)
+        private bool HabilidadeExists(int id)
         {
-          return (_context.Cartas?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Habilidades?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model ScryFallManager.Models.Carta
+﻿@model ScryFallManager.Entities.Carta
 
 @{
     ViewData["Title"] = "Edit";
@@ -24,9 +24,9 @@
                 <span asp-validation-for="CardTexto" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Raridade" class="control-label"></label>
-                <input asp-for="Raridade" class="form-control" />
-                <span asp-validation-for="Raridade" class="text-danger"></span>
+                <label asp-for="RaridadeCarta" class="control-label"></label>
+                <input asp-for="RaridadeCarta" class="form-control" />
+                <span asp-validation-for="RaridadeCarta" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CustoMana" class="control-label"></label>
