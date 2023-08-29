@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ScryFallManager.Models;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,19 +11,11 @@ namespace ScryFallManager.Entities
         [Key]
         public int Id { get; set; }
 
-        public string Nome { get; set; }
+        public string? Nome { get; set; }
 
         public string? Texto { get; set; }
 
-        public enum RaridadeEnum
-        {
-            Common,
-            Uncommon,
-            Rare,
-            MythicalRare
-        }
-
-        public virtual RaridadeEnum? Raridade { get; set; }
+        public virtual RaridadeEnum Raridade { get; set; }
 
         public string? CustoMana { get; set; }
 
