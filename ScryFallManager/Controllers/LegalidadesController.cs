@@ -10,90 +10,90 @@ using ScryFallManager.Entities;
 
 namespace ScryFallManager.Controllers
 {
-    public class CartasController : Controller
+    public class LegalidadesController : Controller
     {
         private readonly OracleDbContext _context;
 
-        public CartasController(OracleDbContext context)
+        public LegalidadesController(OracleDbContext context)
         {
             _context = context;
         }
 
-        // GET: Cartas
+        // GET: Legalidades
         public async Task<IActionResult> Index()
         {
-            var oracleDbContext = _context.Cartas.Include(c => c.Colecao);
+            var oracleDbContext = _context.Legalidade.Include(l => l.Carta);
             return View(await oracleDbContext.ToListAsync());
         }
 
-        // GET: Cartas/Details/5
+        // GET: Legalidades/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Cartas == null)
+            if (id == null || _context.Legalidade == null)
             {
                 return NotFound();
             }
 
-            var carta = await _context.Cartas
-                .Include(c => c.Colecao)
+            var legalidade = await _context.Legalidade
+                .Include(l => l.Carta)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (carta == null)
+            if (legalidade == null)
             {
                 return NotFound();
             }
 
-            return View(carta);
+            return View(legalidade);
         }
 
-        // GET: Cartas/Create
+        // GET: Legalidades/Create
         public IActionResult Create()
         {
-            ViewData["ColecaoId"] = new SelectList(_context.Colecao, "Id", "Id");
+            ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Id");
             return View();
         }
 
-        // POST: Cartas/Create
+        // POST: Legalidades/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Texto,Raridade,CustoMana,DataLancamento,ColecaoId")] Carta carta)
+        public async Task<IActionResult> Create([Bind("Id,Formato,Legal,CartaId")] Legalidade legalidade)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(carta);
+                _context.Add(legalidade);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ColecaoId"] = new SelectList(_context.Colecao, "Id", "Id", carta.ColecaoId);
-            return View(carta);
+            ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Id", legalidade.CartaId);
+            return View(legalidade);
         }
 
-        // GET: Cartas/Edit/5
+        // GET: Legalidades/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Cartas == null)
+            if (id == null || _context.Legalidade == null)
             {
                 return NotFound();
             }
 
-            var carta = await _context.Cartas.FindAsync(id);
-            if (carta == null)
+            var legalidade = await _context.Legalidade.FindAsync(id);
+            if (legalidade == null)
             {
                 return NotFound();
             }
-            ViewData["ColecaoId"] = new SelectList(_context.Colecao, "Id", "Id", carta.ColecaoId);
-            return View(carta);
+            ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Id", legalidade.CartaId);
+            return View(legalidade);
         }
 
-        // POST: Cartas/Edit/5
+        // POST: Legalidades/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Texto,Raridade,CustoMana,DataLancamento,ColecaoId")] Carta carta)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Formato,Legal,CartaId")] Legalidade legalidade)
         {
-            if (id != carta.Id)
+            if (id != legalidade.Id)
             {
                 return NotFound();
             }
@@ -102,12 +102,12 @@ namespace ScryFallManager.Controllers
             {
                 try
                 {
-                    _context.Update(carta);
+                    _context.Update(legalidade);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CartaExists(carta.Id))
+                    if (!LegalidadeExists(legalidade.Id))
                     {
                         return NotFound();
                     }
@@ -118,51 +118,51 @@ namespace ScryFallManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ColecaoId"] = new SelectList(_context.Colecao, "Id", "Id", carta.ColecaoId);
-            return View(carta);
+            ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Id", legalidade.CartaId);
+            return View(legalidade);
         }
 
-        // GET: Cartas/Delete/5
+        // GET: Legalidades/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Cartas == null)
+            if (id == null || _context.Legalidade == null)
             {
                 return NotFound();
             }
 
-            var carta = await _context.Cartas
-                .Include(c => c.Colecao)
+            var legalidade = await _context.Legalidade
+                .Include(l => l.Carta)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (carta == null)
+            if (legalidade == null)
             {
                 return NotFound();
             }
 
-            return View(carta);
+            return View(legalidade);
         }
 
-        // POST: Cartas/Delete/5
+        // POST: Legalidades/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Cartas == null)
+            if (_context.Legalidade == null)
             {
-                return Problem("Entity set 'OracleDbContext.Cartas'  is null.");
+                return Problem("Entity set 'OracleDbContext.Legalidade'  is null.");
             }
-            var carta = await _context.Cartas.FindAsync(id);
-            if (carta != null)
+            var legalidade = await _context.Legalidade.FindAsync(id);
+            if (legalidade != null)
             {
-                _context.Cartas.Remove(carta);
+                _context.Legalidade.Remove(legalidade);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CartaExists(int id)
+        private bool LegalidadeExists(int id)
         {
-          return (_context.Cartas?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Legalidade?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

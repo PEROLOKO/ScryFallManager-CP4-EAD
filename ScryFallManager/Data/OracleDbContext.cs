@@ -11,5 +11,9 @@ namespace ScryFallManager.Data
 
         public OracleDbContext(DbContextOptions<OracleDbContext> options) : base(options) { }
 
+        public DbSet<ScryFallManager.Entities.Colecao> Colecao { get; set; } = default!;
+
+        public DbSet<ScryFallManager.Entities.Legalidade> Legalidade { get; set; } = default!;
+
     }
 }

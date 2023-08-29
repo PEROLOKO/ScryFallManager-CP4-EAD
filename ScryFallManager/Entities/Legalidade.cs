@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ScryFallManager.Entities
 {
@@ -6,11 +7,12 @@ namespace ScryFallManager.Entities
     {
         public int Id { get; set; }
 
-        [Required]
-        [MaxLength(200)]
         public string Formato { get; set; }
 
-        [Required]
-        public bool Status { get; set; }
+        public bool Legal { get; set; }
+
+        [ForeignKey("Carta")]
+        public int CartaId { get; set; }
+        public virtual Carta Carta { get; set; }
     }
 }
