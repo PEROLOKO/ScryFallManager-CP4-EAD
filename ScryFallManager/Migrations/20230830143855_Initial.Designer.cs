@@ -12,7 +12,7 @@ using ScryFallManager.Data;
 namespace ScryFallManager.Migrations
 {
     [DbContext(typeof(OracleDbContext))]
-    [Migration("20230829212224_Initial")]
+    [Migration("20230830143855_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -43,10 +43,9 @@ namespace ScryFallManager.Migrations
                         .HasColumnType("TIMESTAMP(7)");
 
                     b.Property<string>("Nome")
-                        .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
 
-                    b.Property<int?>("Raridade")
+                    b.Property<int>("Raridade")
                         .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("Texto")
@@ -143,7 +142,7 @@ namespace ScryFallManager.Migrations
                         .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
 
-                    b.Property<bool>("Status")
+                    b.Property<bool>("Legal")
                         .HasColumnType("NUMBER(1)");
 
                     b.HasKey("Id");

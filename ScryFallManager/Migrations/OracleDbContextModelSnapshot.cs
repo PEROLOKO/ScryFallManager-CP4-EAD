@@ -40,10 +40,9 @@ namespace ScryFallManager.Migrations
                         .HasColumnType("TIMESTAMP(7)");
 
                     b.Property<string>("Nome")
-                        .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
 
-                    b.Property<int?>("Raridade")
+                    b.Property<int>("Raridade")
                         .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("Texto")
@@ -140,7 +139,7 @@ namespace ScryFallManager.Migrations
                         .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
 
-                    b.Property<bool>("Status")
+                    b.Property<bool>("Legal")
                         .HasColumnType("NUMBER(1)");
 
                     b.HasKey("Id");

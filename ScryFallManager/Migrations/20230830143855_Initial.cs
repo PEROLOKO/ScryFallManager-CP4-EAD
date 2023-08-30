@@ -31,9 +31,9 @@ namespace ScryFallManager.Migrations
                 {
                     Id = table.Column<int>(type: "NUMBER(10)", nullable: false)
                         .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    Nome = table.Column<string>(type: "NVARCHAR2(2000)", nullable: false),
+                    Nome = table.Column<string>(type: "NVARCHAR2(2000)", nullable: true),
                     Texto = table.Column<string>(type: "NVARCHAR2(2000)", nullable: true),
-                    Raridade = table.Column<int>(type: "NUMBER(10)", nullable: true),
+                    Raridade = table.Column<int>(type: "NUMBER(10)", nullable: false),
                     CustoMana = table.Column<string>(type: "NVARCHAR2(2000)", nullable: true),
                     DataLancamento = table.Column<DateTime>(type: "TIMESTAMP(7)", nullable: true),
                     ColecaoId = table.Column<int>(type: "NUMBER(10)", nullable: false)
@@ -103,7 +103,7 @@ namespace ScryFallManager.Migrations
                     Id = table.Column<int>(type: "NUMBER(10)", nullable: false)
                         .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
                     Formato = table.Column<string>(type: "NVARCHAR2(2000)", nullable: false),
-                    Status = table.Column<bool>(type: "NUMBER(1)", nullable: false),
+                    Legal = table.Column<bool>(type: "NUMBER(1)", nullable: false),
                     CartaId = table.Column<int>(type: "NUMBER(10)", nullable: false)
                 },
                 constraints: table =>

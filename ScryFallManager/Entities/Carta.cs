@@ -15,7 +15,7 @@ namespace ScryFallManager.Entities
 
         public string? Texto { get; set; }
 
-        public virtual RaridadeEnum Raridade { get; set; }
+        public RaridadeEnum Raridade { get; set; } = RaridadeEnum.Common;
 
         public string? CustoMana { get; set; }
 
@@ -28,8 +28,8 @@ namespace ScryFallManager.Entities
         public virtual ICollection<Legalidade> Legalidades { get; set; } = new List<Legalidade>();
 
         [ForeignKey("Colecao")]
-        public int ColecaoId { get; set; }
-        public virtual Colecao Colecao { get; set; }
+        public int? ColecaoId { get; set; }
+        public virtual Colecao? Colecao { get; set; }
 
     }
 }

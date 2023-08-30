@@ -59,7 +59,7 @@ namespace ScryFallManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nome,Texto,Raridade,CustoMana,DataLancamento,ColecaoId")] Carta carta)
         {
-            // if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _context.Add(carta);
                 await _context.SaveChangesAsync();
