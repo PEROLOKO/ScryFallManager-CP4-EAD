@@ -57,7 +57,7 @@ namespace ScryFallManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Texto,Raridade,CustoMana,DataLancamento,ColecaoId")] Carta carta)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Texto,Raridade,Idioma,CustoMana,DataLancamento,ColecaoId")] Carta carta)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace ScryFallManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Texto,Raridade,CustoMana,DataLancamento,ColecaoId")] Carta carta)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Texto,Raridade,Idioma,CustoMana,DataLancamento,ColecaoId")] Carta carta)
         {
             if (id != carta.Id)
             {

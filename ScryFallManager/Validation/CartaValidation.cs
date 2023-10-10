@@ -9,6 +9,7 @@ namespace ScryFallManager.Validation
             RuleFor(x => x.Nome).NotEmpty().NotNull();
             RuleFor(x => x.Texto).NotEmpty().NotNull();
             RuleFor(x => x.Raridade).NotNull();
+            RuleFor(x => x.Idioma).NotNull();
             RuleFor(x => x.DataLancamento).NotNull();
         }
     }

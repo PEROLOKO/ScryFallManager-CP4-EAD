@@ -18,7 +18,8 @@ namespace ScryFallManager.Migrations
                     Id = table.Column<int>(type: "NUMBER(10)", nullable: false)
                         .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
                     Nome = table.Column<string>(type: "NVARCHAR2(2000)", nullable: true),
-                    DataLancamento = table.Column<DateTime>(type: "TIMESTAMP(7)", nullable: true)
+                    DataLancamento = table.Column<DateTime>(type: "TIMESTAMP(7)", nullable: true),
+                    Idioma = table.Column<int>(type: "NUMBER(10)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,12 +32,13 @@ namespace ScryFallManager.Migrations
                 {
                     Id = table.Column<int>(type: "NUMBER(10)", nullable: false)
                         .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    Nome = table.Column<string>(type: "NVARCHAR2(2000)", nullable: true),
-                    Texto = table.Column<string>(type: "NVARCHAR2(2000)", nullable: true),
+                    Nome = table.Column<string>(type: "NVARCHAR2(100)", maxLength: 100, nullable: true),
+                    Texto = table.Column<string>(type: "NVARCHAR2(1000)", maxLength: 1000, nullable: true),
                     Raridade = table.Column<int>(type: "NUMBER(10)", nullable: false),
-                    CustoMana = table.Column<string>(type: "NVARCHAR2(2000)", nullable: true),
+                    Idioma = table.Column<int>(type: "NUMBER(10)", nullable: false),
+                    CustoMana = table.Column<string>(type: "NVARCHAR2(100)", maxLength: 100, nullable: true),
                     DataLancamento = table.Column<DateTime>(type: "TIMESTAMP(7)", nullable: true),
-                    ColecaoId = table.Column<int>(type: "NUMBER(10)", nullable: false)
+                    ColecaoId = table.Column<int>(type: "NUMBER(10)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -45,8 +47,7 @@ namespace ScryFallManager.Migrations
                         name: "FK_Cartas_Colecao_ColecaoId",
                         column: x => x.ColecaoId,
                         principalTable: "Colecao",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -55,7 +56,7 @@ namespace ScryFallManager.Migrations
                 {
                     Id = table.Column<int>(type: "NUMBER(10)", nullable: false)
                         .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    Nome = table.Column<string>(type: "NVARCHAR2(2000)", nullable: false),
+                    Nome = table.Column<string>(type: "NVARCHAR2(2000)", nullable: true),
                     CartaId = table.Column<int>(type: "NUMBER(10)", nullable: false)
                 },
                 constraints: table =>
@@ -70,39 +71,12 @@ namespace ScryFallManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Idiomas",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "NUMBER(10)", nullable: false)
-                        .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    Nome = table.Column<string>(type: "NVARCHAR2(200)", maxLength: 200, nullable: false),
-                    CartaId = table.Column<int>(type: "NUMBER(10)", nullable: false),
-                    ColecaoId = table.Column<int>(type: "NUMBER(10)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Idiomas", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Idiomas_Cartas_CartaId",
-                        column: x => x.CartaId,
-                        principalTable: "Cartas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Idiomas_Colecao_ColecaoId",
-                        column: x => x.ColecaoId,
-                        principalTable: "Colecao",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Legalidade",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "NUMBER(10)", nullable: false)
                         .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    Formato = table.Column<string>(type: "NVARCHAR2(2000)", nullable: false),
+                    Formato = table.Column<string>(type: "NVARCHAR2(2000)", nullable: true),
                     Legal = table.Column<bool>(type: "NUMBER(1)", nullable: false),
                     CartaId = table.Column<int>(type: "NUMBER(10)", nullable: false)
                 },
@@ -128,16 +102,6 @@ namespace ScryFallManager.Migrations
                 column: "CartaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Idiomas_CartaId",
-                table: "Idiomas",
-                column: "CartaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Idiomas_ColecaoId",
-                table: "Idiomas",
-                column: "ColecaoId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Legalidade_CartaId",
                 table: "Legalidade",
                 column: "CartaId");
@@ -148,9 +112,6 @@ namespace ScryFallManager.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Habilidades");
-
-            migrationBuilder.DropTable(
-                name: "Idiomas");
 
             migrationBuilder.DropTable(
                 name: "Legalidade");

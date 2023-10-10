@@ -10,12 +10,12 @@ namespace ScryFallManager.Entities
     {
         public int Id { get; set; }
 
-        public string Formato { get; set; }
+        public string? Formato { get; set; }
 
         public bool Legal { get; set; }
 
         [ForeignKey("Carta")]
         public int CartaId { get; set; }
-        public virtual Carta Carta { get; set; }
+        public virtual Carta? Carta { get; set; }
     }
 }

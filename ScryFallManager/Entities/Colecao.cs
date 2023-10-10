@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ScryFallManager.Enum;
+using System.ComponentModel.DataAnnotations;
 
 namespace ScryFallManager.Entities
 {
@@ -16,7 +17,7 @@ namespace ScryFallManager.Entities
 
         public virtual ICollection<Carta> Cartas { get; set; } = new List<Carta>();
 
-        public virtual ICollection<Idioma> Idiomas { get; set; } = new List<Idioma>();
+        public IdiomaEnum Idioma { get; set; } = IdiomaEnum.English;
 
     }
 }

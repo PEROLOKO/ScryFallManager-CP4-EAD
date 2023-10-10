@@ -12,7 +12,7 @@ using ScryFallManager.Data;
 namespace ScryFallManager.Migrations
 {
     [DbContext(typeof(OracleDbContext))]
-    [Migration("20230830143855_Initial")]
+    [Migration("20231010113740_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -33,23 +33,29 @@ namespace ScryFallManager.Migrations
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ColecaoId")
+                    b.Property<int?>("ColecaoId")
                         .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("CustoMana")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasMaxLength(100)
+                        .HasColumnType("NVARCHAR2(100)");
 
                     b.Property<DateTime?>("DataLancamento")
                         .HasColumnType("TIMESTAMP(7)");
 
+                    b.Property<int>("Idioma")
+                        .HasColumnType("NUMBER(10)");
+
                     b.Property<string>("Nome")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasMaxLength(100)
+                        .HasColumnType("NVARCHAR2(100)");
 
                     b.Property<int>("Raridade")
                         .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("Texto")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("NVARCHAR2(1000)");
 
                     b.HasKey("Id");
 
@@ -68,6 +74,9 @@ namespace ScryFallManager.Migrations
 
                     b.Property<DateTime?>("DataLancamento")
                         .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<int>("Idioma")
+                        .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("Nome")
                         .HasColumnType("NVARCHAR2(2000)");
@@ -89,7 +98,6 @@ namespace ScryFallManager.Migrations
                         .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("Nome")
-                        .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
 
                     b.HasKey("Id");
@@ -97,34 +105,6 @@ namespace ScryFallManager.Migrations
                     b.HasIndex("CartaId");
 
                     b.ToTable("Habilidades");
-                });
-
-            modelBuilder.Entity("ScryFallManager.Entities.Idioma", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)");
-
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CartaId")
-                        .HasColumnType("NUMBER(10)");
-
-                    b.Property<int>("ColecaoId")
-                        .HasColumnType("NUMBER(10)");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("NVARCHAR2(200)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CartaId");
-
-                    b.HasIndex("ColecaoId");
-
-                    b.ToTable("Idiomas");
                 });
 
             modelBuilder.Entity("ScryFallManager.Entities.Legalidade", b =>
@@ -139,7 +119,6 @@ namespace ScryFallManager.Migrations
                         .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("Formato")
-                        .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<bool>("Legal")
@@ -156,9 +135,7 @@ namespace ScryFallManager.Migrations
                 {
                     b.HasOne("ScryFallManager.Entities.Colecao", "Colecao")
                         .WithMany("Cartas")
-                        .HasForeignKey("ColecaoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ColecaoId");
 
                     b.Navigation("Colecao");
                 });
@@ -172,25 +149,6 @@ namespace ScryFallManager.Migrations
                         .IsRequired();
 
                     b.Navigation("Carta");
-                });
-
-            modelBuilder.Entity("ScryFallManager.Entities.Idioma", b =>
-                {
-                    b.HasOne("ScryFallManager.Entities.Carta", "Carta")
-                        .WithMany("Idiomas")
-                        .HasForeignKey("CartaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ScryFallManager.Entities.Colecao", "Colecao")
-                        .WithMany("Idiomas")
-                        .HasForeignKey("ColecaoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Carta");
-
-                    b.Navigation("Colecao");
                 });
 
             modelBuilder.Entity("ScryFallManager.Entities.Legalidade", b =>
@@ -208,16 +166,12 @@ namespace ScryFallManager.Migrations
                 {
                     b.Navigation("Habilidades");
 
-                    b.Navigation("Idiomas");
-
                     b.Navigation("Legalidades");
                 });
 
             modelBuilder.Entity("ScryFallManager.Entities.Colecao", b =>
                 {
                     b.Navigation("Cartas");
-
-                    b.Navigation("Idiomas");
                 });
 #pragma warning restore 612, 618
         }
