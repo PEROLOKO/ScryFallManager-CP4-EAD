@@ -79,21 +79,7 @@ namespace ScryFallManager.Controllers
         // GET: Cartas/Create
         public IActionResult Create()
         {
-
-            if (!_cache.TryGetValue("CreateSelectList", out IEnumerable<SelectListItem> SelectColecaoList)) {
-                SelectColecaoList = _context.Colecao.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Nome }).ToList();
-
-                var cacheEntryOptions = new MemoryCacheEntryOptions
-                {
-                    AbsoluteExpiration = DateTime.Now.AddMinutes(5),
-                    SlidingExpiration = TimeSpan.FromMinutes(2),
-                    Size = 1024,
-                };
-
-                _cache.Set("CreateSelectList", SelectColecaoList, cacheEntryOptions);
-            }
-
-            ViewData["ColecaoId"] = new SelectList(SelectColecaoList, "Id", "Id");
+            ViewData["ColecaoId"] = new SelectList(_context.Colecao, "Id", "Id");
             return View();
         }
 
@@ -111,20 +97,6 @@ namespace ScryFallManager.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            if (!_cache.TryGetValue("CreateSelectList", out IEnumerable<SelectListItem> SelectColecaoList))
-            {
-                SelectColecaoList = _context.Colecao.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Nome }).ToList();
-
-                var cacheEntryOptions = new MemoryCacheEntryOptions
-                {
-                    AbsoluteExpiration = DateTime.Now.AddMinutes(5),
-                    SlidingExpiration = TimeSpan.FromMinutes(2),
-                    Size = 1024,
-                };
-
-                _cache.Set("CreateSelectList", SelectColecaoList, cacheEntryOptions);
-            }
-
             ViewData["ColecaoId"] = new SelectList(_context.Colecao, "Id", "Id", carta.ColecaoId);
             return View(carta);
         }
@@ -137,11 +109,30 @@ namespace ScryFallManager.Controllers
                 return NotFound();
             }
 
-            var carta = await _context.Cartas.FindAsync(id);
+            if (!_cache.TryGetValue($"Carta_{id}", out Carta? carta))
+            {
+                carta = await _context.Cartas
+                    .Include(c => c.Colecao)
+                    .FirstOrDefaultAsync(m => m.Id == id);
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                    SlidingExpiration = TimeSpan.FromMinutes(2),
+                    Size = 1024,
+                };
+
+                if (carta != null)
+                {
+                    _cache.Set($"Carta_{id}", carta, cacheEntryOptions);
+                }
+            }
+
             if (carta == null)
             {
                 return NotFound();
             }
+
             ViewData["ColecaoId"] = new SelectList(_context.Colecao, "Id", "Id", carta.ColecaoId);
             return View(carta);
         }
@@ -164,6 +155,8 @@ namespace ScryFallManager.Controllers
                 {
                     _context.Update(carta);
                     await _context.SaveChangesAsync();
+
+                    _cache.Remove($"Carta_{id}");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -190,9 +183,25 @@ namespace ScryFallManager.Controllers
                 return NotFound();
             }
 
-            var carta = await _context.Cartas
-                .Include(c => c.Colecao)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            if (!_cache.TryGetValue($"Carta_{id}", out Carta? carta))
+            {
+                carta = await _context.Cartas
+                    .Include(c => c.Colecao)
+                    .FirstOrDefaultAsync(m => m.Id == id);
+
+                if (carta != null)
+                {
+                    var cacheEntryOptions = new MemoryCacheEntryOptions
+                    {
+                        AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                        SlidingExpiration = TimeSpan.FromMinutes(2),
+                        Size = 1024,
+                    };
+
+                    _cache.Set($"Carta_{id}", carta, cacheEntryOptions);
+                }
+            }
+
             if (carta == null)
             {
                 return NotFound();
@@ -210,10 +219,17 @@ namespace ScryFallManager.Controllers
             {
                 return Problem("Entity set 'OracleDbContext.Cartas'  is null.");
             }
-            var carta = await _context.Cartas.FindAsync(id);
-            if (carta != null)
+
+            if (!_cache.TryGetValue($"Carta_{id}", out Carta? carta))
             {
-                _context.Cartas.Remove(carta);
+                carta = await _context.Cartas.FindAsync(id);
+
+                if (carta != null)
+                {
+                    _context.Cartas.Remove(carta);
+                    await _context.SaveChangesAsync();
+                    _cache.Remove($"Carta_{id}");
+                }
             }
             
             await _context.SaveChangesAsync();
