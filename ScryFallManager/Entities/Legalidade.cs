@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ScryFallManager.Entities
 {
+    /// <summary>
+    /// Entidade que representa a legalidade de uma carta de Magic
+    /// </summary>
     public class Legalidade
     {
         public int Id { get; set; }

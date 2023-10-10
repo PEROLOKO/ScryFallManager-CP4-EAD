@@ -1,4 +1,4 @@
-﻿namespace ScryFallManager.Models
+﻿namespace ScryFallManager.Enum
 {
     public enum RaridadeEnum
     {

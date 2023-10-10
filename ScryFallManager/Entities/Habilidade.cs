@@ -2,6 +2,9 @@
 
 namespace ScryFallManager.Entities
 {
+    /// <summary>
+    /// Entidade de uma habilidade de uma carta de Magic
+    /// </summary>
     public class Habilidade
     {
         public int Id { get; set; }

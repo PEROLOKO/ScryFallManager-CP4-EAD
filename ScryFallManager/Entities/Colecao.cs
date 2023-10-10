@@ -4,6 +4,9 @@ namespace ScryFallManager.Entities
 {
     public class Colecao
     {
+        /// <summary>
+        /// Entidade de uma coleção de cartas de Magic
+        /// </summary>
         [Key]
         public int Id { get; set; }
 
