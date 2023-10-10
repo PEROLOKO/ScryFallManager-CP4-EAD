@@ -94,6 +94,22 @@ namespace ScryFallManager.Controllers
             {
                 _context.Add(carta);
                 await _context.SaveChangesAsync();
+                
+                if (!_cache.TryGetValue("Cartas", out List<Carta>? cartas))
+                {
+                    cartas = await _context.Cartas.Include(c => c.Colecao).ToListAsync();
+                }
+                cartas.Add(carta);
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                    SlidingExpiration = TimeSpan.FromMinutes(2),
+                    Size = 1024,
+                };
+                
+                _cache.Set("Cartas", cartas, cacheEntryOptions);
+
                 return RedirectToAction(nameof(Index));
             }
 
@@ -230,6 +246,11 @@ namespace ScryFallManager.Controllers
                     await _context.SaveChangesAsync();
                     _cache.Remove($"Carta_{id}");
                 }
+            }
+
+            if (carta != null)
+            {
+                _context.Cartas.Remove(carta);
             }
             
             await _context.SaveChangesAsync();

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using ScryFallManager.Data;
 using ScryFallManager.Entities;
 
@@ -13,18 +14,30 @@ namespace ScryFallManager.Controllers
     public class ColecoesController : Controller
     {
         private readonly OracleDbContext _context;
+        private readonly IMemoryCache _cache;
 
-        public ColecoesController(OracleDbContext context)
+        public ColecoesController(OracleDbContext context, IMemoryCache cache)
         {
             _context = context;
+            _cache = cache;
         }
 
         // GET: Colecoes
         public async Task<IActionResult> Index()
         {
-              return _context.Colecao != null ? 
-                          View(await _context.Colecao.ToListAsync()) :
-                          Problem("Entity set 'OracleDbContext.Colecao'  is null.");
+            if (!_cache.TryGetValue("Colecoes", out List<Colecao> colecoes))
+            {
+                colecoes = await _context.Colecao.ToListAsync();
+                var cacheEntryOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                    SlidingExpiration = TimeSpan.FromMinutes(2),
+                    Size = 1024,
+                };
+                _cache.Set("Colecoes", colecoes, cacheEntryOptions);
+                return View(colecoes);
+            }
+            return View(colecoes);
         }
 
         // GET: Colecoes/Details/5
@@ -35,8 +48,22 @@ namespace ScryFallManager.Controllers
                 return NotFound();
             }
 
-            var colecao = await _context.Colecao
-                .FirstOrDefaultAsync(m => m.Id == id);
+            if (!_cache.TryGetValue($"Colecao_{id}", out Colecao? colecao))
+            {
+                colecao = await _context.Colecao.FirstOrDefaultAsync(m => m.Id == id);
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                    SlidingExpiration = TimeSpan.FromMinutes(2),
+                    Size = 1024,
+                };
+
+                if (colecao != null)
+                {
+                    _cache.Set($"Colecao_{id}", colecao, cacheEntryOptions);
+                }
+            }
             if (colecao == null)
             {
                 return NotFound();
@@ -62,6 +89,22 @@ namespace ScryFallManager.Controllers
             {
                 _context.Add(colecao);
                 await _context.SaveChangesAsync();
+
+                if (!_cache.TryGetValue("Colecoes", out List<Colecao>? colecoes))
+                {
+                    colecoes = await _context.Colecao.ToListAsync();
+                }
+                colecoes.Add(colecao);
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                    SlidingExpiration = TimeSpan.FromMinutes(2),
+                    Size = 1024,
+                };
+
+                _cache.Set("Colecoes", colecoes, cacheEntryOptions);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(colecao);
@@ -75,7 +118,23 @@ namespace ScryFallManager.Controllers
                 return NotFound();
             }
 
-            var colecao = await _context.Colecao.FindAsync(id);
+            if (!_cache.TryGetValue($"Colecao_{id}", out Colecao? colecao))
+            {
+                colecao = await _context.Colecao.FindAsync(id);
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                    SlidingExpiration = TimeSpan.FromMinutes(2),
+                    Size = 1024,
+                };
+
+                if (colecao != null)
+                {
+                    _cache.Set($"Colecao_{id}", colecao, cacheEntryOptions);
+                }
+            }
+
             if (colecao == null)
             {
                 return NotFound();
@@ -101,6 +160,8 @@ namespace ScryFallManager.Controllers
                 {
                     _context.Update(colecao);
                     await _context.SaveChangesAsync();
+
+                    _cache.Remove($"Colecao_{id}");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -126,8 +187,23 @@ namespace ScryFallManager.Controllers
                 return NotFound();
             }
 
-            var colecao = await _context.Colecao
-                .FirstOrDefaultAsync(m => m.Id == id);
+            if (!_cache.TryGetValue($"Colecao_{id}", out Colecao? colecao))
+            {
+                colecao = await _context.Colecao.FirstOrDefaultAsync(m => m.Id == id);
+                
+                if (colecao != null)
+                {
+                    var cacheEntryOptions = new MemoryCacheEntryOptions
+                    {
+                        AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                        SlidingExpiration = TimeSpan.FromMinutes(2),
+                        Size = 1024,
+                    };
+
+                    _cache.Set($"Colecao_{id}", colecao, cacheEntryOptions);
+                }
+            }
+
             if (colecao == null)
             {
                 return NotFound();
@@ -145,7 +221,19 @@ namespace ScryFallManager.Controllers
             {
                 return Problem("Entity set 'OracleDbContext.Colecao'  is null.");
             }
-            var colecao = await _context.Colecao.FindAsync(id);
+
+            if (!_cache.TryGetValue($"Colecao_{id}", out Colecao? colecao))
+            {
+                colecao = await _context.Colecao.FindAsync(id);
+
+                if (colecao != null)
+                {
+                    _context.Colecao.Remove(colecao);
+                    await _context.SaveChangesAsync();
+                    _cache.Remove($"Colecao_{id}");
+                }
+            }
+
             if (colecao != null)
             {
                 _context.Colecao.Remove(colecao);
