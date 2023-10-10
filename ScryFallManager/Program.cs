@@ -17,6 +17,7 @@ builder.Services.AddDbContext<OracleDbContext>(options =>
 
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddScoped<IValidator<Carta>, CartaValidation>();
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
