@@ -12,7 +12,7 @@ using ScryFallManager.Data;
 namespace ScryFallManager.Migrations
 {
     [DbContext(typeof(OracleDbContext))]
-    [Migration("20231010113740_Initial")]
+    [Migration("20231011231131_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace ScryFallManager.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             OracleModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -37,8 +37,8 @@ namespace ScryFallManager.Migrations
                         .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("CustoMana")
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("NVARCHAR2(50)");
 
                     b.Property<DateTime?>("DataLancamento")
                         .HasColumnType("TIMESTAMP(7)");
@@ -96,6 +96,9 @@ namespace ScryFallManager.Migrations
 
                     b.Property<int>("CartaId")
                         .HasColumnType("NUMBER(10)");
+
+                    b.Property<string>("Descricao")
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("Nome")
                         .HasColumnType("NVARCHAR2(2000)");

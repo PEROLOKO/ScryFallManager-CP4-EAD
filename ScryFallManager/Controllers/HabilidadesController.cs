@@ -51,8 +51,8 @@ namespace ScryFallManager.Controllers
             if (!_cache.TryGetValue($"Habilidade_{id}", out Habilidade? habilidade))
             {
                 habilidade = await _context.Habilidades
-                    .Include(h => h.Carta)
-                    .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(h => h.Carta)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
                 var cacheEntryOptions = new MemoryCacheEntryOptions
                 {
@@ -202,8 +202,8 @@ namespace ScryFallManager.Controllers
             if (!_cache.TryGetValue($"Habilidade_{id}", out Habilidade? habilidade))
             {
                 habilidade = await _context.Habilidades
-                    .Include(h => h.Carta)
-                    .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(h => h.Carta)
+                .FirstOrDefaultAsync(m => m.Id == id);
                 
                 if (habilidade != null)
                 {
