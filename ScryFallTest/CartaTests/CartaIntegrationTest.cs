@@ -109,6 +109,7 @@ namespace ScryFallTest.CartaTests
             var habilidade = new Habilidade
             {
                 Nome = "Habilidade Teste",
+                Descricao = "Descrição Teste",
                 Carta = carta
             };
 

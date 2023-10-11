@@ -11,6 +11,8 @@ namespace ScryFallManager.Entities
 
         public string? Nome { get; set; }
 
+        public string? Descricao { get; set; }
+
         [ForeignKey("Carta")]
         public int CartaId { get; set; }
         public virtual Carta? Carta { get; set; }
