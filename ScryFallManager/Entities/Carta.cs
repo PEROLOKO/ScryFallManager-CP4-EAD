@@ -24,7 +24,7 @@ namespace ScryFallManager.Entities
 
         public IdiomaEnum Idioma { get; set; } = IdiomaEnum.English;
 
-        [MaxLength(100)]
+        [MaxLength(50)]
         public string? CustoMana { get; set; }
 
         public DateTime? DataLancamento { get; set; }
