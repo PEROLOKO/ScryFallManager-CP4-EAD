@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using ScryFallManager.Data;
 using ScryFallManager.Entities;
 
@@ -13,17 +14,30 @@ namespace ScryFallManager.Controllers
     public class HabilidadesController : Controller
     {
         private readonly OracleDbContext _context;
+        private readonly IMemoryCache _cache;
 
-        public HabilidadesController(OracleDbContext context)
+        public HabilidadesController(OracleDbContext context, IMemoryCache cache)
         {
             _context = context;
+            _cache = cache;
         }
 
         // GET: Habilidades
         public async Task<IActionResult> Index()
         {
-            var oracleDbContext = _context.Habilidades.Include(h => h.Carta);
-            return View(await oracleDbContext.ToListAsync());
+            if (!_cache.TryGetValue("Habilidades", out List<Habilidade> habilidades))
+            {
+                habilidades = await _context.Habilidades.Include(h => h.Carta).ToListAsync();
+                var cacheEntryOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                    SlidingExpiration = TimeSpan.FromMinutes(2),
+                    Size = 1024,
+                };
+                _cache.Set("Habilidades", habilidades, cacheEntryOptions);
+                return View(habilidades);
+            }
+            return View(habilidades);
         }
 
         // GET: Habilidades/Details/5
@@ -34,9 +48,25 @@ namespace ScryFallManager.Controllers
                 return NotFound();
             }
 
-            var habilidade = await _context.Habilidades
-                .Include(h => h.Carta)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            if (!_cache.TryGetValue($"Habilidade_{id}", out Habilidade? habilidade))
+            {
+                habilidade = await _context.Habilidades
+                    .Include(h => h.Carta)
+                    .FirstOrDefaultAsync(m => m.Id == id);
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                    SlidingExpiration = TimeSpan.FromMinutes(2),
+                    Size = 1024,
+                };
+
+                if (habilidade != null)
+                {
+                    _cache.Set($"Habilidade_{id}",habilidade, cacheEntryOptions);
+                }
+            }
+
             if (habilidade == null)
             {
                 return NotFound();
@@ -63,6 +93,24 @@ namespace ScryFallManager.Controllers
             {
                 _context.Add(habilidade);
                 await _context.SaveChangesAsync();
+
+                if (!_cache.TryGetValue("Habilidades", out List<Habilidade>? habilidades))
+                {
+                    habilidades = await _context.Habilidades
+                        .Include(h => h.Carta)
+                        .ToListAsync();
+                }
+                habilidades.Add(habilidade);
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                    SlidingExpiration = TimeSpan.FromMinutes(2),
+                    Size = 1024,
+                };
+
+                _cache.Set("Habilidades", habilidades, cacheEntryOptions);
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Nome", habilidade.CartaId);
@@ -77,11 +125,30 @@ namespace ScryFallManager.Controllers
                 return NotFound();
             }
 
-            var habilidade = await _context.Habilidades.FindAsync(id);
+            if (!_cache.TryGetValue($"Habilidade_{id}", out Habilidade? habilidade))
+            {
+                habilidade = await _context.Habilidades
+                    .Include(h => h.Carta)
+                    .FirstOrDefaultAsync(m => m.Id == id);
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                    SlidingExpiration = TimeSpan.FromMinutes(2),
+                    Size = 1024,
+                };
+
+                if(habilidade != null)
+                {
+                    _cache.Set($"Carta_{id}", habilidade, cacheEntryOptions);
+                }
+            }
+
             if (habilidade == null)
             {
                 return NotFound();
             }
+
             ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Nome", habilidade.CartaId);
             return View(habilidade);
         }
@@ -104,6 +171,8 @@ namespace ScryFallManager.Controllers
                 {
                     _context.Update(habilidade);
                     await _context.SaveChangesAsync();
+
+                    _cache.Remove($"Habilidade_{id}");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -130,9 +199,25 @@ namespace ScryFallManager.Controllers
                 return NotFound();
             }
 
-            var habilidade = await _context.Habilidades
-                .Include(h => h.Carta)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            if (!_cache.TryGetValue($"Habilidade_{id}", out Habilidade? habilidade))
+            {
+                habilidade = await _context.Habilidades
+                    .Include(h => h.Carta)
+                    .FirstOrDefaultAsync(m => m.Id == id);
+                
+                if (habilidade != null)
+                {
+                    var cacheEntryOptions = new MemoryCacheEntryOptions
+                    {
+                        AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                        SlidingExpiration = TimeSpan.FromMinutes(2),
+                        Size = 1024,
+                    };
+
+                    _cache.Set($"Habilidade_{id}", habilidade, cacheEntryOptions);
+                }
+            }
+
             if (habilidade == null)
             {
                 return NotFound();
@@ -150,7 +235,19 @@ namespace ScryFallManager.Controllers
             {
                 return Problem("Entity set 'OracleDbContext.Habilidades'  is null.");
             }
-            var habilidade = await _context.Habilidades.FindAsync(id);
+            
+            if (!_cache.TryGetValue($"Habilidade_{id}", out Habilidade? habilidade))
+            {
+                habilidade = await _context.Habilidades.FindAsync(id);
+
+                if (habilidade != null)
+                {
+                    _context.Habilidades.Remove(habilidade);
+                    await _context.SaveChangesAsync();
+                    _cache.Remove($"Habilidade_{id}");
+                }
+            }
+            
             if (habilidade != null)
             {
                 _context.Habilidades.Remove(habilidade);

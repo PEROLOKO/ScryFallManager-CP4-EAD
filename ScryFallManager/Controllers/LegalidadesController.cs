@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using ScryFallManager.Data;
 using ScryFallManager.Entities;
 
@@ -13,17 +14,30 @@ namespace ScryFallManager.Controllers
     public class LegalidadesController : Controller
     {
         private readonly OracleDbContext _context;
+        private readonly IMemoryCache _cache;
 
-        public LegalidadesController(OracleDbContext context)
+        public LegalidadesController(OracleDbContext context, IMemoryCache cache)
         {
             _context = context;
+            _cache = cache;
         }
 
         // GET: Legalidades
         public async Task<IActionResult> Index()
         {
-            var oracleDbContext = _context.Legalidade.Include(l => l.Carta);
-            return View(await oracleDbContext.ToListAsync());
+            if (!_cache.TryGetValue("Legalidades", out List<Legalidade> legalidades))
+            {
+                legalidades = await _context.Legalidade.Include(l => l.Carta).ToListAsync();
+                var cacheEntryOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                    SlidingExpiration = TimeSpan.FromMinutes(2),
+                    Size = 1024,
+                };
+                _cache.Set("Legalidades", legalidades, cacheEntryOptions);
+                return View(legalidades);
+            }
+            return View(legalidades);
         }
 
         // GET: Legalidades/Details/5
@@ -34,9 +48,25 @@ namespace ScryFallManager.Controllers
                 return NotFound();
             }
 
-            var legalidade = await _context.Legalidade
-                .Include(l => l.Carta)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            if (!_cache.TryGetValue($"Legalidade_{id}", out Legalidade? legalidade))
+            {
+                legalidade = await _context.Legalidade
+                    .Include(l => l.Carta)
+                    .FirstOrDefaultAsync(m => m.Id == id);
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                    SlidingExpiration = TimeSpan.FromMinutes(2),
+                    Size = 1024,
+                };
+
+                if (legalidade != null)
+                {
+                    _cache.Set($"Legalidade_{id}", legalidade, cacheEntryOptions);
+                }
+            }
+
             if (legalidade == null)
             {
                 return NotFound();
@@ -48,7 +78,7 @@ namespace ScryFallManager.Controllers
         // GET: Legalidades/Create
         public IActionResult Create()
         {
-            ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Id");
+            ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Nome");
             return View();
         }
 
@@ -63,9 +93,25 @@ namespace ScryFallManager.Controllers
             {
                 _context.Add(legalidade);
                 await _context.SaveChangesAsync();
+
+                if (!_cache.TryGetValue("Legalidades", out List<Legalidade>? legalidades))
+                {
+                    legalidades = await _context.Legalidade.Include(x => x.Carta).ToListAsync();
+                }
+                legalidades.Add(legalidade);
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                    SlidingExpiration = TimeSpan.FromMinutes(2),
+                    Size = 1024,
+                };
+
+                _cache.Set("Legalidades", legalidade, cacheEntryOptions);
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Id", legalidade.CartaId);
+            ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Nome", legalidade.CartaId);
             return View(legalidade);
         }
 
@@ -77,12 +123,30 @@ namespace ScryFallManager.Controllers
                 return NotFound();
             }
 
-            var legalidade = await _context.Legalidade.FindAsync(id);
+            if (!_cache.TryGetValue($"Legalidade_{id}", out Legalidade? legalidade))
+            {
+                legalidade = await _context.Legalidade
+                    .Include(l => l.Carta)
+                    .FirstOrDefaultAsync(m => m.Id == id);
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                    SlidingExpiration = TimeSpan.FromMinutes(2),
+                    Size = 1024,
+                };
+
+                if (legalidade != null)
+                {
+                    _cache.Set($"Legalidade_{id}", legalidade, cacheEntryOptions);
+                }
+            }
+
             if (legalidade == null)
             {
                 return NotFound();
             }
-            ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Id", legalidade.CartaId);
+            ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Nome", legalidade.CartaId);
             return View(legalidade);
         }
 
@@ -104,6 +168,8 @@ namespace ScryFallManager.Controllers
                 {
                     _context.Update(legalidade);
                     await _context.SaveChangesAsync();
+
+                    _cache.Remove($"Legalidade_{id}");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,7 +184,7 @@ namespace ScryFallManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Id", legalidade.CartaId);
+            ViewData["CartaId"] = new SelectList(_context.Cartas, "Id", "Nome", legalidade.CartaId);
             return View(legalidade);
         }
 
@@ -130,9 +196,25 @@ namespace ScryFallManager.Controllers
                 return NotFound();
             }
 
-            var legalidade = await _context.Legalidade
-                .Include(l => l.Carta)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            if (!_cache.TryGetValue($"Legalidade_{id}", out Legalidade? legalidade))
+            {
+                legalidade = await _context.Legalidade
+                    .Include(l => l.Carta)
+                    .FirstOrDefaultAsync(m => m.Id == id);
+
+                if (legalidade != null)
+                {
+                    var cacheEntryOptions = new MemoryCacheEntryOptions
+                    {
+                        AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                        SlidingExpiration = TimeSpan.FromMinutes(2),
+                        Size = 1024,
+                    };
+
+                    _cache.Set($"Legalidade_{id}", legalidade, cacheEntryOptions);
+                }
+            }
+
             if (legalidade == null)
             {
                 return NotFound();
@@ -150,7 +232,19 @@ namespace ScryFallManager.Controllers
             {
                 return Problem("Entity set 'OracleDbContext.Legalidade'  is null.");
             }
-            var legalidade = await _context.Legalidade.FindAsync(id);
+
+            if (!_cache.TryGetValue($"Legalidade_{id}", out Legalidade? legalidade))
+            {
+                legalidade = await _context.Legalidade.FindAsync(id);
+
+                if (legalidade != null)
+                {
+                    _context.Legalidade.Remove(legalidade);
+                    await _context.SaveChangesAsync();
+                    _cache.Remove($"Legalidade_{id}");
+                }
+            }
+
             if (legalidade != null)
             {
                 _context.Legalidade.Remove(legalidade);
